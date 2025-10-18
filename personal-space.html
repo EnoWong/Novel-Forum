@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私人文件夹 - Novel Forum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link href="css/book-style.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B7D6B',
+                        secondary: '#A67F65',
+                        accent: '#D9B38C',
+                        light: '#F9F5F1',
+                        dark: '#4A4542',
+                        'gray-medium': '#7A7265'
+                    },
+                    fontFamily: {
+                        serif: ['Noto Serif SC', 'serif'],
+                        handwriting: ['ZCOOL XiaoWei', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .folder-hover {
+                @apply transition-all duration-300 hover:shadow-md hover:-translate-y-1;
+            }
+            .document-hover {
+                @apply transition-all duration-200 hover:bg-primary/5 rounded-lg;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light text-dark paper-texture font-serif">
+    <!-- 滚动进度条 -->
+    <div class="scroll-progress"></div>
+    
+    <!-- 装饰线条 -->
+    <div class="decoration-line top"></div>
+    <div class="decoration-line left"></div>
+    
+    <!-- 装饰元素：漂浮的书页 -->
+    <div class="floating-page" style="top: 25%; right: 10%; width: 52px; height: 78px; transform: rotate(7deg);"></div>
+    <div class="floating-page" style="bottom: 20%; left: 15%; width: 46px; height: 68px; transform: rotate(-4deg); animation-delay: 2s;"></div>
+    
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-40 book-navbar" id="navbar">
+        <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-book text-primary text-2xl"></i>
+                <span class="text-xl font-handwriting font-bold text-primary">Novel Forum</span>
+            </div>
+            
+            <!-- 桌面端导航 -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">首页</a>
+                <a href="forum.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">群组论坛</a>
+                <a href="personal-space.html" class="font-medium text-primary border-b-2 border-primary transition-all duration-300 nav-link">个人空间</a>
+                <a href="penalty.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">罚文专区</a>
+                <a href="contest.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">征文活动</a>
+                <a href="announcement.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">公告栏</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="relative text-gray-medium hover:text-primary transition-colors">
+                    <i class="fa fa-bell text-xl"></i>
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-xs rounded-full flex items-center justify-center">3</span>
+                </button>
+                
+                <a href="login.html" class="hidden md:block book-btn book-btn-primary">
+                    登录
+                </a>
+                <!-- 移动端菜单按钮 -->
+                <button class="md:hidden text-dark text-xl" id="mobile-menu-button">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- 移动端导航菜单 -->
+        <div class="md:hidden hidden bg-white/95 backdrop-blur-sm border-t border-primary/10" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="index.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">首页</a>
+                <a href="forum.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">群组论坛</a>
+                <a href="personal-space.html" class="py-2 font-medium text-primary border-l-2 border-primary pl-2 transition-all duration-300">个人空间</a>
+                <a href="penalty.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">罚文专区</a>
+                <a href="contest.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">征文活动</a>
+                <a href="announcement.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">公告栏</a>
+                <a href="login.html" class="py-2 text-center book-btn book-btn-primary">
+                    登录
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 relative">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- 左侧导航 -->
+            <aside class="lg:w-1/5">
+                <div class="book-card sticky top-24">
+                    <div class="p-5 bg-primary/10 border-b border-primary/20">
+                        <h3 class="font-bold font-handwriting">个人空间</h3>
+                        <p class="text-sm text-gray-medium">管理你的创作与文档</p>
+                    </div>
+                    
+                    <nav class="p-3">
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="personal-space.html" class="flex items-center py-2 px-3 rounded-lg bg-primary/10 text-primary border-l-4 border-primary">
+                                    <i class="fa fa-folder-open w-5 text-center mr-2"></i>
+                                    <span>私人文件夹</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-public.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-globe w-5 text-center mr-2"></i>
+                                    <span>个人公开空间</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-settings.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-puzzle-piece w-5 text-center mr-2"></i>
+                                    <span>设定分区</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-entries.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-trophy w-5 text-center mr-2"></i>
+                                    <span>我的征文</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-penalties.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-file-text-o w-5 text-center mr-2"></i>
+                                    <span>罚文记录</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-config.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-cog w-5 text-center mr-2"></i>
+                                    <span>空间设置</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    
+                    <!-- 存储空间信息 -->
+                    <div class="p-5 border-t border-primary/10">
+                        <h4 class="font-medium text-sm mb-3 font-handwriting">存储空间</h4>
+                        <div class="w-full bg-light rounded-full h-2.5 mb-2">
+                            <div class="bg-primary h-2.5 rounded-full" style="width: 35%"></div>
+                        </div>
+                        <p class="text-xs text-gray-medium">已使用 3.5GB / 10GB</p>
+                        <button class="mt-3 w-full py-1.5 text-xs book-btn book-btn-primary">
+                            升级存储空间
+                        </button>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- 右侧主内容区 -->
+            <div class="lg:w-4/5">
+                <!-- 顶部操作栏 -->
+                <div class="book-card p-5 mb-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold font-handwriting">私人文件夹</h2>
+                            <p class="text-sm text-gray-medium mt-1">管理你的私密创作与文档</p>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="relative">
+                                <input type="text" placeholder="搜索文件或文件夹..." class="book-form-input pl-9 pr-4 py-2 w-64">
+                                <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-medium"></i>
+                            </div>
+                            <div class="relative">
+                                <button class="flex items-center px-4 py-2 book-btn book-btn-primary">
+                                    <i class="fa fa-filter mr-2"></i> 筛选
+                                </button>
+                            </div>
+                            <div class="relative group">
+                                <button class="flex items-center px-4 py-2 book-btn book-btn-accent">
+                                    <i class="fa fa-plus mr-2"></i> 新建
+                                </button>
+                                <div class="absolute right-0 mt-2 w-48 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg py-2 hidden group-hover:block z-10">
+                                    <a href="#" class="block px-4 py-2 text-sm hover:bg-primary/5 flex items-center">
+                                        <i class="fa fa-folder w-5 mr-2 text-gray-medium"></i> 文件夹
+                                    </a>
+                                    <a href="work-create.html" class="block px-4 py-2 text-sm hover:bg-primary/5 flex items-center">
+                                        <i class="fa fa-file-text w-5 mr-2 text-gray-medium"></i> 文档
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 text-sm hover:bg-primary/5 flex items-center">
+                                        <i class="fa fa-sticky-note w-5 mr-2 text-gray-medium"></i> 笔记
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 文件夹和文件列表 -->
+                <div class="space-y-4">
+                    <!-- 文件夹1 -->
+                    <div class="book-card p-4 folder-hover">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fa fa-folder text-accent text-2xl mr-3"></i>
+                                <div>
+                                    <h3 class="font-medium">我的小说作品</h3>
+                                    <p class="text-sm text-gray-medium">包含 12 个文档</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-medium mr-4">2023-07-15 更新</span>
+                                <div class="flex space-x-2">
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 文件夹2 -->
+                    <div class="book-card p-4 folder-hover">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fa fa-folder text-accent text-2xl mr-3"></i>
+                                <div>
+                                    <h3 class="font-medium">人物设定</h3>
+                                    <p class="text-sm text-gray-medium">包含 8 个文档</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-medium mr-4">2023-07-10 更新</span>
+                                <div class="flex space-x-2">
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 文件夹3 -->
+                    <div class="book-card p-4 folder-hover">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fa fa-folder text-accent text-2xl mr-3"></i>
+                                <div>
+                                    <h3 class="font-medium">世界观构建</h3>
+                                    <p class="text-sm text-gray-medium">包含 5 个文档</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-medium mr-4">2023-07-05 更新</span>
+                                <div class="flex space-x-2">
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 文档列表标题 -->
+                    <div class="flex items-center justify-between py-3 border-b border-primary/10">
+                        <h3 class="font-bold font-handwriting">最近文档</h3>
+                        <a href="#" class="text-primary text-sm hover:underline">查看全部</a>
+                    </div>
+                    
+                    <!-- 文档1 -->
+                    <div class="book-card p-4 document-hover">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fa fa-file-text-o text-primary text-xl mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium">《星辰大海》第一章</h4>
+                                    <p class="text-sm text-gray-medium">我的小说作品</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-medium mr-4">2023-07-15 14:30</span>
+                                <div class="flex space-x-2">
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 文档2 -->
+                    <div class="book-card p-4 document-hover">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fa fa-file-text-o text-primary text-xl mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium">李小明人物设定</h4>
+                                    <p class="text-sm text-gray-medium">人物设定</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-medium mr-4">2023-07-12 09:15</span>
+                                <div class="flex space-x-2">
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 文档3 -->
+                    <div class="book-card p-4 document-hover">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fa fa-file-text-o text-primary text-xl mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium">科幻世界观设定</h4>
+                                    <p class="text-sm text-gray-medium">世界观构建</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-medium mr-4">2023-07-10 16:45</span>
+                                <div class="flex space-x-2">
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button class="p-2 text-gray-medium hover:text-primary rounded hover:bg-primary/5 transition-colors">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="book-footer">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fa fa-book text-primary text-xl"></i>
+                    <span class="text-lg font-handwriting font-bold text-primary">Novel Forum</span>
+                </div>
+                <div class="text-sm text-gray-medium text-center md:text-right">
+                    <p class="font-handwriting">以文会友，执笔同行</p>
+                    <p class="mt-1">© 2025 Novel Forum小说创作交流平台</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 滚动进度条
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector(".scroll-progress").style.width = scrolled + "%";
+            
+            // 导航栏滚动效果
+            const navbar = document.getElementById('navbar');
+            if (winScroll > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
+    </script>
+</body>
+</html>

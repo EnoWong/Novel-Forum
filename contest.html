@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>征文活动 - Novel Forum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link href="css/book-style.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B7D6B',
+                        secondary: '#A67F65',
+                        accent: '#D9B38C',
+                        light: '#F9F5F1',
+                        dark: '#4A4542',
+                        'gray-medium': '#7A7265'
+                    },
+                    fontFamily: {
+                        serif: ['Noto Serif SC', 'serif'],
+                        handwriting: ['ZCOOL XiaoWei', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .contest-card-hover {
+                @apply transition-all duration-300 hover:shadow-md hover:-translate-y-1;
+            }
+            .prize-badge {
+                @apply absolute top-3 left-3 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light text-dark paper-texture font-serif">
+    <!-- 滚动进度条 -->
+    <div class="scroll-progress"></div>
+    
+    <!-- 装饰线条 -->
+    <div class="decoration-line top"></div>
+    <div class="decoration-line left"></div>
+    
+    <!-- 装饰元素：漂浮的书页 -->
+    <div class="floating-page" style="top: 20%; right: 8%; width: 54px; height: 81px; transform: rotate(9deg);"></div>
+    <div class="floating-page" style="bottom: 35%; left: 12%; width: 42px; height: 63px; transform: rotate(-7deg); animation-delay: 1.2s;"></div>
+    
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-40 book-navbar" id="navbar">
+        <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-book text-primary text-2xl"></i>
+                <span class="text-xl font-handwriting font-bold text-primary">Novel Forum</span>
+            </div>
+            
+            <!-- 桌面端导航 -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">首页</a>
+                <a href="forum.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">群组论坛</a>
+                <a href="personal-space.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">个人空间</a>
+                <a href="penalty.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">罚文专区</a>
+                <a href="contest.html" class="font-medium text-primary border-b-2 border-primary transition-all duration-300 nav-link">征文活动</a>
+                <a href="announcement.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">公告栏</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <img src="https://picsum.photos/id/64/40/40" alt="用户头像" class="w-8 h-8 rounded-full cursor-pointer border-2 border-primary/20">
+                    <div class="absolute right-0 mt-2 w-48 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg py-2 hidden" id="user-menu">
+                        <a href="personal-space.html" class="block px-4 py-2 text-sm hover:bg-primary/5 transition-colors duration-300">个人空间</a>
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-primary/5 transition-colors duration-300">消息通知</a>
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-primary/5 transition-colors duration-300">账号设置</a>
+                        <div class="border-t my-1 border-primary/10"></div>
+                        <a href="login.html" class="block px-4 py-2 text-sm text-red-500 hover:bg-primary/5 transition-colors duration-300">退出登录</a>
+                    </div>
+                </div>
+                <!-- 移动端菜单按钮 -->
+                <button class="md:hidden text-dark text-xl" id="mobile-menu-button">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- 移动端导航菜单 -->
+        <div class="md:hidden hidden bg-white/95 backdrop-blur-sm border-t border-primary/10" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="index.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">首页</a>
+                <a href="forum.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">群组论坛</a>
+                <a href="personal-space.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">个人空间</a>
+                <a href="penalty.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">罚文专区</a>
+                <a href="contest.html" class="py-2 font-medium text-primary border-l-2 border-primary pl-2 transition-all duration-300">征文活动</a>
+                <a href="announcement.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">公告栏</a>
+                <div class="border-t pt-2 border-primary/10">
+                    <a href="#" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">账号设置</a>
+                    <a href="login.html" class="py-2 font-medium text-red-500 hover:text-red-600 transition-colors duration-300 border-l-2 border-transparent hover:border-red-300 pl-2">退出登录</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 relative">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- 左侧边栏 -->
+            <aside class="lg:w-1/5">
+                <div class="book-card sticky top-24">
+                    <div class="p-5 bg-primary/10 border-b border-primary/20">
+                        <h3 class="font-bold font-handwriting">征文活动</h3>
+                        <p class="text-sm text-gray-medium">发现并参与创作比赛</p>
+                    </div>
+                    
+                    <nav class="p-3">
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="#" class="flex items-center py-2 px-3 rounded-lg bg-primary/10 text-primary border-l-4 border-primary">
+                                    <i class="fa fa-fire w-5 text-center mr-2"></i>
+                                    <span>当前活动</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-history w-5 text-center mr-2"></i>
+                                    <span>历史活动</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-trophy w-5 text-center mr-2"></i>
+                                    <span>获奖作品</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-user w-5 text-center mr-2"></i>
+                                    <span>我的参与</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    
+                    <!-- 管理员功能 -->
+                    <div class="p-5 border-t border-primary/10">
+                        <button id="create-contest-btn" class="w-full py-2.5 book-btn book-btn-accent">
+                            <i class="fa fa-plus mr-2"></i> 创建征文活动
+                        </button>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- 右侧主内容区 -->
+            <div class="lg:w-4/5">
+                <!-- 当前活动 -->
+                <div class="book-card overflow-hidden mb-8 contest-card-hover">
+                    <div class="relative">
+                        <img src="https://picsum.photos/id/104/1200/300" alt="夏日故事征文比赛" class="w-full h-48 md:h-64 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <div class="p-6 text-white">
+                                <span class="bg-accent text-white text-xs px-2 py-0.5 rounded-full mb-2 inline-block">进行中</span>
+                                <h1 class="text-2xl md:text-3xl font-bold font-handwriting mb-2">第一届"夏日故事"主题征文比赛</h1>
+                                <p class="text-white/80 max-w-2xl">用文字描绘你心中的夏日，无论是海边的浪漫、午后的慵懒，还是夏夜的星空，都可以成为你的创作灵感。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-primary/5 p-4 rounded-lg">
+                                <div class="text-sm text-gray-medium mb-1">活动时间</div>
+                                <div class="flex items-center">
+                                    <i class="fa fa-calendar text-primary mr-2"></i>
+                                    <span>2023-07-01 至 2023-08-15</span>
+                                </div>
+                            </div>
+                            <div class="bg-primary/5 p-4 rounded-lg">
+                                <div class="text-sm text-gray-medium mb-1">参与人数</div>
+                                <div class="flex items-center">
+                                    <i class="fa fa-users text-primary mr-2"></i>
+                                    <span>128人已参与</span>
+                                </div>
+                            </div>
+                            <div class="bg-primary/5 p-4 rounded-lg">
+                                <div class="text-sm text-gray-medium mb-1">作品数量</div>
+                                <div class="flex items-center">
+                                    <i class="fa fa-file-text-o text-primary mr-2"></i>
+                                    <span>156篇作品</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold font-handwriting mb-3">活动详情</h2>
+                            <div class="space-y-3">
+                                <div>
+                                    <h3 class="font-medium mb-1">征文主题</h3>
+                                    <p>以"夏日故事"为主题，可以是发生在夏天的故事，也可以是与夏天相关的情感、回忆或想象。</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium mb-1">作品要求</h3>
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li>体裁不限，小说、散文、诗歌等均可</li>
+                                        <li>字数要求：小说、散文类1000-5000字；诗歌类不限字数</li>
+                                        <li>内容原创，未在任何平台发表过</li>
+                                        <li>内容积极健康，符合法律法规和公序良俗</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium mb-1">奖项设置</h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                                        <div class="border border-primary/20 rounded-lg p-4 relative">
+                                            <div class="prize-badge bg-secondary">1</div>
+                                            <h4 class="font-bold text-center mb-2">一等奖</h4>
+                                            <ul class="text-sm space-y-1">
+                                                <li>• 获奖证书</li>
+                                                <li>• 文学类图书5本</li>
+                                                <li>• 平台首页推荐1周</li>
+                                            </ul>
+                                        </div>
+                                        <div class="border border-primary/20 rounded-lg p-4 relative">
+                                            <div class="prize-badge bg-accent">2</div>
+                                            <h4 class="font-bold text-center mb-2">二等奖</h4>
+                                            <ul class="text-sm space-y-1">
+                                                <li>• 获奖证书</li>
+                                                <li>• 文学类图书3本</li>
+                                                <li>• 平台首页推荐3天</li>
+                                            </ul>
+                                        </div>
+                                        <div class="border border-primary/20 rounded-lg p-4 relative">
+                                            <div class="prize-badge bg-primary">3</div>
+                                            <h4 class="font-bold text-center mb-2">三等奖</h4>
+                                            <ul class="text-sm space-y-1">
+                                                <li>• 获奖证书</li>
+                                                <li>• 文学类图书1本</li>
+                                                <li>• 平台首页推荐1天</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-3">
+                            <button class="px-6 py-3 book-btn book-btn-primary">
+                                <i class="fa fa-file-text-o mr-2"></i> 提交作品
+                            </button>
+                            <button class="px-6 py-3 book-btn book-btn-secondary">
+                                <i class="fa fa-thumbs-o-up mr-2"></i> 为作品投票
+                            </button>
+                            <button class="px-6 py-3 book-btn book-btn-accent">
+                                <i class="fa fa-share-alt mr-2"></i> 分享活动
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 往期优秀作品 -->
+                <div class="book-card overflow-hidden">
+                    <div class="p-5 border-b border-primary/10">
+                        <h2 class="text-xl font-bold font-handwriting">往期优秀作品</h2>
+                    </div>
+                    
+                    <div class="p-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- 作品1 -->
+                            <div class="border border-primary/20 rounded-lg p-4 contest-card-hover">
+                                <div class="flex items-start gap-4">
+                                    <img src="https://picsum.photos/id/105/80/100" alt="作品封面" class="w-16 h-20 object-cover rounded">
+                                    <div>
+                                        <h3 class="font-bold mb-1">《海边的邂逅》</h3>
+                                        <p class="text-sm text-gray-medium mb-2">作者：李浪漫</p>
+                                        <div class="flex items-center text-sm mb-2">
+                                            <span class="bg-secondary/10 text-secondary px-2 py-0.5 rounded-full mr-2">一等奖</span>
+                                            <span class="text-gray-medium">3265字</span>
+                                        </div>
+                                        <p class="text-sm line-clamp-2">讲述了一个在海边度假时发生的浪漫邂逅故事，情节温馨动人...</p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end mt-3">
+                                    <button class="text-sm text-primary hover:underline">阅读全文</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 作品2 -->
+                            <div class="border border-primary/20 rounded-lg p-4 contest-card-hover">
+                                <div class="flex items-start gap-4">
+                                    <img src="https://picsum.photos/id/106/80/100" alt="作品封面" class="w-16 h-20 object-cover rounded">
+                                    <div>
+                                        <h3 class="font-bold mb-1">《午后的蝉鸣》</h3>
+                                        <p class="text-sm text-gray-medium mb-2">作者：王夏日</p>
+                                        <div class="flex items-center text-sm mb-2">
+                                            <span class="bg-accent/10 text-accent px-2 py-0.5 rounded-full mr-2">二等奖</span>
+                                            <span class="text-gray-medium">2840字</span>
+                                        </div>
+                                        <p class="text-sm line-clamp-2">通过描写夏日午后的蝉鸣声，回忆童年时光，充满怀旧情怀...</p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end mt-3">
+                                    <button class="text-sm text-primary hover:underline">阅读全文</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="book-footer">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fa fa-book text-primary text-xl"></i>
+                    <span class="text-lg font-handwriting font-bold text-primary">Novel Forum</span>
+                </div>
+                <div class="text-sm text-gray-medium text-center md:text-right">
+                    <p class="font-handwriting">以文会友，执笔同行</p>
+                    <p class="mt-1">© 2025 Novel Forum小说创作交流平台</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 用户菜单切换
+        const userAvatar = document.querySelector('.rounded-full.cursor-pointer');
+        if (userAvatar) {
+            userAvatar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const userMenu = document.getElementById('user-menu');
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // 点击其他区域关闭用户菜单
+            document.addEventListener('click', function() {
+                const userMenu = document.getElementById('user-menu');
+                if (userMenu && !userMenu.classList.contains('hidden')) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // 滚动进度条
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector(".scroll-progress").style.width = scrolled + "%";
+            
+            // 导航栏滚动效果
+            const navbar = document.getElementById('navbar');
+            if (winScroll > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
+    </script>
+</body>
+</html>
