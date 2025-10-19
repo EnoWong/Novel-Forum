@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>罚文记录 - Novel Forum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link href="css/book-style.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B7D6B',
+                        secondary: '#A67F65',
+                        accent: '#D9B38C',
+                        light: '#F9F5F1',
+                        dark: '#4A4542',
+                        'gray-medium': '#7A7265'
+                    },
+                    fontFamily: {
+                        serif: ['Noto Serif SC', 'serif'],
+                        handwriting: ['ZCOOL XiaoWei', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .nav-active {
+                @apply bg-primary/10 text-primary border-l-4 border-primary;
+            }
+            .penalty-card-hover {
+                @apply transition-all duration-300 hover:shadow-md;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light text-dark paper-texture font-serif">
+    <!-- 滚动进度条 -->
+    <div class="scroll-progress"></div>
+    
+    <!-- 装饰线条 -->
+    <div class="decoration-line top"></div>
+    <div class="decoration-line left"></div>
+    
+    <!-- 装饰元素：漂浮的书页 -->
+    <div class="floating-page" style="top: 25%; right: 16%; width: 46px; height: 69px; transform: rotate(1deg);"></div>
+    <div class="floating-page" style="bottom: 31%; left: 19%; width: 50px; height: 75px; transform: rotate(0deg); animation-delay: 2.5s;"></div>
+    
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-40 book-navbar" id="navbar">
+        <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-book text-primary text-2xl"></i>
+                <span class="text-xl font-handwriting font-bold text-primary">Novel Forum</span>
+            </div>
+            
+            <!-- 桌面端导航 -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">首页</a>
+                <a href="forum.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">群组论坛</a>
+                <a href="personal-space.html" class="font-medium text-primary border-b-2 border-primary transition-all duration-300 nav-link">个人空间</a>
+                <a href="penalty.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">罚文专区</a>
+                <a href="contest.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">征文活动</a>
+                <a href="announcement.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">公告栏</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <img src="https://picsum.photos/id/64/40/40" alt="用户头像" class="w-8 h-8 rounded-full cursor-pointer border-2 border-primary/20">
+                    <div class="absolute right-0 mt-2 w-48 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg py-2 hidden" id="user-menu">
+                        <a href="personal-space.html" class="block px-4 py-2 text-sm hover:bg-primary/5 transition-colors duration-300">个人空间</a>
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-primary/5 transition-colors duration-300">消息通知</a>
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-primary/5 transition-colors duration-300">账号设置</a>
+                        <div class="border-t my-1 border-primary/10"></div>
+                        <a href="login.html" class="block px-4 py-2 text-sm text-red-500 hover:bg-primary/5 transition-colors duration-300">退出登录</a>
+                    </div>
+                </div>
+                <!-- 移动端菜单按钮 -->
+                <button class="md:hidden text-dark text-xl" id="mobile-menu-button">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- 移动端导航菜单 -->
+        <div class="md:hidden hidden bg-white/95 backdrop-blur-sm border-t border-primary/10" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="index.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">首页</a>
+                <a href="forum.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">群组论坛</a>
+                <a href="personal-space.html" class="py-2 font-medium text-primary border-l-2 border-primary pl-2 transition-all duration-300">个人空间</a>
+                <a href="penalty.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">罚文专区</a>
+                <a href="contest.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">征文活动</a>
+                <a href="announcement.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">公告栏</a>
+                <div class="border-t pt-2 border-primary/10">
+                    <a href="#" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">账号设置</a>
+                    <a href="login.html" class="py-2 font-medium text-red-500 hover:text-red-600 transition-colors duration-300 border-l-2 border-transparent hover:border-red-300 pl-2">退出登录</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- 左侧导航 -->
+            <aside class="lg:w-1/5">
+                <div class="book-card sticky top-24">
+                    <div class="p-5 bg-primary/10 border-b border-primary/20">
+                        <h3 class="font-bold font-handwriting">个人空间</h3>
+                        <p class="text-sm text-gray-medium">管理你的创作与文档</p>
+                    </div>
+                    
+                    <nav class="p-3">
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="personal-space.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-folder-open w-5 text-center mr-2"></i>
+                                    <span>私人文件夹</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-public.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-globe w-5 text-center mr-2"></i>
+                                    <span>个人公开空间</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-settings.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-puzzle-piece w-5 text-center mr-2"></i>
+                                    <span>设定分区</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-entries.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-trophy w-5 text-center mr-2"></i>
+                                    <span>我的征文</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-penalties.html" class="flex items-center py-2 px-3 rounded-lg bg-primary/10 text-primary border-l-4 border-primary">
+                                    <i class="fa fa-file-text-o w-5 text-center mr-2"></i>
+                                    <span>罚文记录</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="personal-config.html" class="flex items-center py-2 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-cog w-5 text-center mr-2"></i>
+                                    <span>空间设置</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+            
+            <!-- 右侧主内容区 -->
+            <div class="lg:w-4/5">
+                <!-- 顶部操作栏 -->
+                <div class="book-card p-6 mb-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold font-handwriting">罚文记录</h2>
+                            <p class="text-sm text-gray-medium mt-1">查看和管理你的罚文任务与完成情况</p>
+                            <div class="mt-2 inline-flex items-center px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">
+                                <i class="fa fa-exclamation-circle mr-1"></i> 有 1 项未完成的罚文任务
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="relative">
+                                <input type="text" placeholder="搜索罚文..." class="book-form-input pl-9 pr-4 py-2 w-64">
+                                <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-medium"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 罚文统计 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="book-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-medium">总罚文数</p>
+                                <h3 class="text-2xl font-bold mt-1">7</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                <i class="fa fa-file-text-o text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-xs text-green-500 flex items-center">
+                            <i class="fa fa-arrow-up mr-1"></i> 较上月增长 1
+                        </div>
+                    </div>
+                    
+                    <div class="book-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-medium">已完成</p>
+                                <h3 class="text-2xl font-bold mt-1">6</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-500">
+                                <i class="fa fa-check text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-xs text-gray-medium">
+                            完成率 85.7%
+                        </div>
+                    </div>
+                    
+                    <div class="book-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-medium">待完成</p>
+                                <h3 class="text-2xl font-bold mt-1">1</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-500">
+                                <i class="fa fa-clock-o text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-xs text-gray-medium">
+                            需在 2 天内完成
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 罚文记录列表 -->
+                <div class="book-card overflow-hidden">
+                    <div class="p-5 border-b border-primary/20">
+                        <h2 class="text-lg font-bold font-handwriting">罚文记录</h2>
+                    </div>
+                    
+                    <div class="divide-y divide-primary/10">
+                        <!-- 记录1 -->
+                        <div class="p-5 penalty-card-hover">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-500 flex-shrink-0">
+                                        <i class="fa fa-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <h3 class="font-medium">周打卡任务</h3>
+                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">已完成</span>
+                                        </div>
+                                        <p class="text-sm text-gray-medium mb-1">完成2000字写作任务</p>
+                                        <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                            <span class="text-gray-medium">提交时间：2023-07-15</span>
+                                            <span class="text-gray-medium">字数：2,156字</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-wrap gap-2 justify-end">
+                                    <button class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-primary/5 transition-colors text-sm book-btn">
+                                        查看详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 记录2 -->
+                        <div class="p-5 penalty-card-hover">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-500 flex-shrink-0">
+                                        <i class="fa fa-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <h3 class="font-medium">月更任务</h3>
+                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">已完成</span>
+                                        </div>
+                                        <p class="text-sm text-gray-medium mb-1">完成5000字写作任务</p>
+                                        <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                            <span class="text-gray-medium">提交时间：2023-07-05</span>
+                                            <span class="text-gray-medium">字数：5,234字</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-wrap gap-2 justify-end">
+                                    <button class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-primary/5 transition-colors text-sm book-btn">
+                                        查看详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 记录3 -->
+                        <div class="p-5 penalty-card-hover">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-500 flex-shrink-0">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <h3 class="font-medium">群内讨论任务</h3>
+                                            <span class="bg-red-100 text-red-800 text-xs px-2 py-0.5 rounded-full">待完成</span>
+                                        </div>
+                                        <p class="text-sm text-gray-medium mb-1">参与群组讨论并发表观点</p>
+                                        <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                            <span class="text-red-500">截止时间：2023-07-25</span>
+                                            <span class="text-gray-medium">剩余时间：2天</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-wrap gap-2 justify-end">
+                                    <button class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-primary/5 transition-colors text-sm book-btn">
+                                        查看详情
+                                    </button>
+                                    <button class="px-3 py-1.5 book-btn book-btn-primary">
+                                        立即完成
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="book-footer">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fa fa-book text-primary text-xl"></i>
+                    <span class="text-lg font-handwriting font-bold text-primary">Novel Forum</span>
+                </div>
+                <div class="text-sm text-gray-medium text-center md:text-right">
+                    <p class="font-handwriting">以文会友，执笔同行</p>
+                    <p class="mt-1">© 2025 Novel Forum小说创作交流平台</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 用户菜单切换
+        const userAvatar = document.querySelector('.rounded-full.cursor-pointer');
+        if (userAvatar) {
+            userAvatar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const userMenu = document.getElementById('user-menu');
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // 点击其他区域关闭用户菜单
+            document.addEventListener('click', function() {
+                const userMenu = document.getElementById('user-menu');
+                if (userMenu && !userMenu.classList.contains('hidden')) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // 滚动进度条
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector(".scroll-progress").style.width = scrolled + "%";
+            
+            // 导航栏滚动效果
+            const navbar = document.getElementById('navbar');
+            if (winScroll > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
+    </script>
+</body>
+</html>

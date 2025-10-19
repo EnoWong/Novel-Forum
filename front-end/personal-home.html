@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>张小白的个人空间 - Novel Forum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link href="css/book-style.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B7D6B',
+                        secondary: '#A67F65',
+                        accent: '#D9B38C',
+                        light: '#F9F5F1',
+                        dark: '#4A4542',
+                        'gray-medium': '#7A7265'
+                    },
+                    fontFamily: {
+                        serif: ['Noto Serif SC', 'serif'],
+                        handwriting: ['ZCOOL XiaoWei', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-hover {
+                @apply transition-all duration-500 hover:shadow-md hover:-translate-y-1;
+            }
+            .paper-texture {
+                background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d9c9b8' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            }
+            .ink-splash {
+                position: relative;
+            }
+            .ink-splash::after {
+                content: '';
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%238b7d6b' fill-opacity='0.05' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/svg%3E");
+                background-size: contain;
+                background-repeat: no-repeat;
+                opacity: 0.5;
+                z-index: 0;
+                animation: float 6s ease-in-out infinite;
+            }
+            
+            /* 新增动画效果 */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes pulseSoft {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.02);
+                }
+            }
+            
+            @keyframes float {
+                0%, 100% {
+                    transform: translateY(0) rotate(0deg);
+                }
+                50% {
+                    transform: translateY(-10px) rotate(2deg);
+                }
+            }
+            
+            @keyframes inkSpread {
+                from {
+                    transform: scale(0.8);
+                    opacity: 0;
+                }
+                to {
+                    transform: scale(1);
+                    opacity: 0.5;
+                }
+            }
+            
+            @keyframes pageTurn {
+                from {
+                    transform: rotateY(0deg);
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }
+                to {
+                    transform: rotateY(5deg);
+                    box-shadow: -10px 5px 15px rgba(0,0,0,0.1);
+                }
+            }
+            
+            .animate-fade-in-up {
+                animation: fadeInUp 0.8s ease-out forwards;
+            }
+            
+            .animate-pulse-soft {
+                animation: pulseSoft 3s ease-in-out infinite;
+            }
+            
+            .book-card {
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+            
+            .book-card:hover {
+                transform: translateY(-5px) rotateX(5deg);
+                animation: pageTurn 0.6s ease-out forwards;
+            }
+            
+            .nav-link {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background-color: #8B7D6B;
+                transition: width 0.3s ease;
+            }
+            
+            .nav-link:hover::after {
+                width: 100%;
+            }
+            
+            .pen-animation {
+                position: relative;
+            }
+            
+            .pen-animation::before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 1px;
+                background-color: #8B7D6B;
+                bottom: -2px;
+                transform: scaleX(0);
+                transform-origin: bottom right;
+                transition: transform 0.3s ease;
+            }
+            
+            .pen-animation:hover::before {
+                transform: scaleX(1);
+                transform-origin: bottom left;
+            }
+            
+            .text-reveal {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .text-reveal::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #F9F5F1;
+                transform: translateX(-100%);
+                transition: transform 0.7s ease;
+                z-index: 1;
+            }
+            
+            .text-reveal.animated::after {
+                transform: translateX(100%);
+            }
+            
+            .text-reveal span {
+                position: relative;
+                z-index: 2;
+            }
+            
+            /* 滚动进度条 */
+            .scroll-progress {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 3px;
+                background-color: #8B7D6B;
+                z-index: 100;
+                width: 0%;
+                transition: width 0.1s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light text-dark paper-texture font-serif">
+    <!-- 滚动进度条 -->
+    <div class="scroll-progress"></div>
+    
+    <!-- 装饰线条 -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-primary/30 z-50"></div>
+    <div class="fixed top-0 left-0 w-1 h-full bg-primary/30 z-50"></div>
+    
+    <!-- 装饰元素：漂浮的书页 -->
+    <div class="fixed top-20 left-10 w-16 h-24 bg-white/20 rounded shadow-md rotate-12 z-0 animate-float hidden md:block"></div>
+    <div class="fixed top-40 right-20 w-12 h-16 bg-white/10 rounded shadow-sm -rotate-6 z-0 animate-float" style="animation-delay: 1s"></div>
+    <div class="fixed bottom-40 left-1/4 w-10 h-14 bg-white/15 rounded shadow-sm rotate-6 z-0 animate-float" style="animation-delay: 2s"></div>
+    
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-sm shadow-sm mt-1 transition-all duration-500 book-navbar" id="navbar">
+        <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2 pen-animation">
+                <i class="fa fa-book text-primary text-2xl transition-transform duration-500 hover:rotate-12"></i>
+                <span class="text-xl font-handwriting font-bold text-primary">Novel Forum</span>
+            </div>
+            
+            <!-- 桌面端导航 -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">首页</a>
+                <a href="forum.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">群组论坛</a>
+                <a href="personal-space.html" class="font-medium text-primary border-b-2 border-primary transition-colors duration-300 nav-link">个人空间</a>
+                <a href="penalty.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">罚文专区</a>
+                <a href="contest.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">征文活动</a>
+                <a href="announcement.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">公告栏</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <img src="https://picsum.photos/id/64/40/40" alt="用户头像" class="w-8 h-8 rounded-full cursor-pointer border-2 border-primary/20 hover:border-primary transition-colors duration-300">
+                    <div class="absolute right-0 mt-2 w-48 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg py-2 hidden" id="user-menu">
+                        <a href="personal-space.html" class="block px-4 py-2 text-sm hover:bg-primary/5 transition-colors duration-300">个人空间</a>
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-primary/5 transition-colors duration-300">消息通知</a>
+                        <a href="personal-settings.html" class="block px-4 py-2 text-sm hover:bg-primary/5 transition-colors duration-300">账号设置</a>
+                        <div class="border-t my-1 border-primary/10"></div>
+                        <a href="login.html" class="block px-4 py-2 text-sm text-red-500 hover:bg-primary/5 transition-colors duration-300">退出登录</a>
+                    </div>
+                </div>
+                <!-- 移动端菜单按钮 -->
+                <button class="md:hidden text-dark text-xl" id="mobile-menu-button">
+                    <i class="fa fa-bars transition-transform duration-300 hover:rotate-90"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- 移动端导航菜单 -->
+        <div class="md:hidden hidden bg-white/95 backdrop-blur-sm border-t border-primary/10" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="index.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">首页</a>
+                <a href="forum.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">群组论坛</a>
+                <a href="personal-space.html" class="py-2 font-medium text-primary border-l-2 border-primary pl-2 transition-colors duration-300">个人空间</a>
+                <a href="penalty.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">罚文专区</a>
+                <a href="contest.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">征文活动</a>
+                <a href="announcement.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">公告栏</a>
+                <div class="border-t pt-2 border-primary/10">
+                    <a href="personal-settings.html" class="py-2 font-medium hover:text-primary transition-colors duration-300">账号设置</a>
+                    <a href="login.html" class="py-2 font-medium text-red-500 hover:text-red-600 transition-colors duration-300">退出登录</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 relative">
+        <!-- 装饰元素 -->
+        <div class="absolute -top-4 -left-2 w-8 h-8 border-t-2 border-l-2 border-primary/20"></div>
+        
+        <!-- 个人资料头部 -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow overflow-hidden mb-6 book-card">
+            <!-- 封面图 -->
+            <div class="h-48 bg-gradient-to-r from-primary to-primary/70 relative">
+                <button class="absolute right-4 bottom-4 bg-white/80 hover:bg-white text-primary px-3 py-1.5 rounded-lg text-sm transition-colors book-btn book-btn-primary">
+                    <i class="fa fa-camera mr-1"></i> 更换封面
+                </button>
+            </div>
+            
+            <!-- 个人信息 -->
+            <div class="px-6 pb-6">
+                <div class="flex flex-col md:flex-row -mt-16">
+                    <!-- 头像 -->
+                    <div class="flex-shrink-0">
+                        <img src="https://picsum.photos/id/64/120/120" alt="张小白的头像" class="w-32 h-32 rounded-full border-4 border-white shadow-md">
+                        <button class="mt-2 w-full bg-light hover:bg-gray-200 text-gray-medium text-xs py-1 rounded transition-colors book-btn book-btn-accent">
+                            <i class="fa fa-camera mr-1"></i> 更换头像
+                        </button>
+                    </div>
+                    
+                    <!-- 基本信息 -->
+                    <div class="mt-4 md:mt-0 md:ml-6 flex-grow">
+                        <div class="flex flex-wrap items-start justify-between gap-4">
+                            <div>
+                                <h1 class="text-2xl font-bold font-handwriting">张小白</h1>
+                                <p class="text-gray-medium mt-1">科幻小说创作者 | 宇宙探索爱好者</p>
+                                <p class="text-sm mt-3 max-w-2xl">
+                                    喜欢仰望星空，相信宇宙中存在其他文明。用文字记录想象中的星际旅程，希望能带你一起探索未知的宇宙奥秘。
+                                </p>
+                            </div>
+                            
+                            <div class="flex gap-3">
+                                <button class="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary/5 transition-colors text-sm book-btn book-btn-primary">
+                                    <i class="fa fa-envelope-o mr-1"></i> 发消息
+                                </button>
+                                <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm book-btn book-btn-primary">
+                                    <i class="fa fa-user-plus mr-1"></i> 关注
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 数据统计 -->
+                        <div class="flex flex-wrap gap-x-8 gap-y-2 mt-6">
+                            <div>
+                                <div class="text-lg font-bold">5</div>
+                                <div class="text-sm text-gray-medium">作品</div>
+                            </div>
+                            <div>
+                                <div class="text-lg font-bold">12.5k</div>
+                                <div class="text-sm text-gray-medium">总阅读</div>
+                            </div>
+                            <div>
+                                <div class="text-lg font-bold">3.2k</div>
+                                <div class="text-sm text-gray-medium">总点赞</div>
+                            </div>
+                            <div>
+                                <div class="text-lg font-bold">867</div>
+                                <div class="text-sm text-gray-medium">粉丝</div>
+                            </div>
+                            <div>
+                                <div class="text-lg font-bold">156</div>
+                                <div class="text-sm text-gray-medium">关注</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 个人空间导航 -->
+            <div class="border-t px-6">
+                <div class="flex overflow-x-auto py-3 space-x-6 text-sm md:text-base hide-scrollbar">
+                    <a href="personal-home.html" class="whitespace-nowrap font-medium text-primary border-b-2 border-primary pb-1">作品</a>
+                    <a href="personal-collection.html" class="whitespace-nowrap font-medium hover:text-primary transition-colors pb-1">收藏</a>
+                    <a href="personal-drafts.html" class="whitespace-nowrap font-medium hover:text-primary transition-colors pb-1">草稿</a>
+                    <a href="personal-like.html" class="whitespace-nowrap font-medium hover:text-primary transition-colors pb-1">点赞</a>
+                    <a href="personal-follow.html" class="whitespace-nowrap font-medium hover:text-primary transition-colors pb-1">关注</a>
+                    <a href="personal-fans.html" class="whitespace-nowrap font-medium hover:text-primary transition-colors pb-1">粉丝</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 作品管理 -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow overflow-hidden mb-6 book-card">
+            <div class="p-6 border-b flex justify-between items-center">
+                <h2 class="text-xl font-bold font-handwriting">我的作品</h2>
+                <a href="work-create.html" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm flex items-center book-btn book-btn-primary">
+                    <i class="fa fa-plus mr-1"></i> 发布新作品
+                </a>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 作品1 -->
+                    <div class="border border-gray-100 rounded-xl overflow-hidden shadow-sm card-hover book-card">
+                        <div class="relative">
+                            <img src="https://picsum.photos/id/1/400/300" alt="星际漫游者封面" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-accent/90 text-white text-xs px-2 py-1 rounded">
+                                连载中
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold">星际漫游者</h3>
+                                <div class="text-xs text-gray-medium">8章</div>
+                            </div>
+                            <p class="text-sm text-gray-medium line-clamp-2 mb-3">
+                                当人类终于突破光速限制，星际旅行成为可能，一群勇敢的探险家踏上了寻找新家园的旅程...
+                            </p>
+                            <div class="flex items-center text-xs text-gray-medium mb-4">
+                                <span><i class="fa fa-eye mr-1"></i> 1.2k</span>
+                                <span class="mx-2">·</span>
+                                <span><i class="fa fa-thumbs-o-up mr-1"></i> 245</span>
+                                <span class="mx-2">·</span>
+                                <span><i class="fa fa-comment-o mr-1"></i> 32</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="work-detail.html" class="flex-1 py-1.5 bg-light text-dark text-sm rounded hover:bg-gray-200 transition-colors text-center book-btn book-btn-primary">
+                                    查看
+                                </a>
+                                <a href="work-edit.html" class="flex-1 py-1.5 bg-primary/10 text-primary text-sm rounded hover:bg-primary/20 transition-colors text-center book-btn book-btn-secondary">
+                                    编辑
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 作品2 -->
+                    <div class="border border-gray-100 rounded-xl overflow-hidden shadow-sm card-hover book-card">
+                        <div class="relative">
+                            <img src="https://picsum.photos/id/2/400/300" alt="人工智能的觉醒封面" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-secondary/90 text-white text-xs px-2 py-1 rounded">
+                                已完结
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold">人工智能的觉醒</h3>
+                                <div class="text-xs text-gray-medium">12章</div>
+                            </div>
+                            <p class="text-sm text-gray-medium line-clamp-2 mb-3">
+                                当AI拥有了自我意识，人类该如何面对？是恐惧还是接纳？一场关于生命定义的探讨由此展开...
+                            </p>
+                            <div class="flex items-center text-xs text-gray-medium mb-4">
+                                <span><i class="fa fa-eye mr-1"></i> 5.3k</span>
+                                <span class="mx-2">·</span>
+                                <span><i class="fa fa-thumbs-o-up mr-1"></i> 1.2k</span>
+                                <span class="mx-2">·</span>
+                                <span><i class="fa fa-comment-o mr-1"></i> 156</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="#" class="flex-1 py-1.5 bg-light text-dark text-sm rounded hover:bg-gray-200 transition-colors text-center book-btn book-btn-primary">
+                                    查看
+                                </a>
+                                <a href="#" class="flex-1 py-1.5 bg-primary/10 text-primary text-sm rounded hover:bg-primary/20 transition-colors text-center book-btn book-btn-secondary">
+                                    编辑
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 作品3 -->
+                    <div class="border border-gray-100 rounded-xl overflow-hidden shadow-sm card-hover book-card">
+                        <div class="relative">
+                            <img src="https://picsum.photos/id/3/400/300" alt="时间旅行者的日记封面" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-accent/90 text-white text-xs px-2 py-1 rounded">
+                                连载中
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold">时间旅行者的日记</h3>
+                                <div class="text-xs text-gray-medium">5章</div>
+                            </div>
+                            <p class="text-sm text-gray-medium line-clamp-2 mb-3">
+                                一位普通的历史老师意外获得了穿越时空的能力，他的人生从此改变，但时间的法则也开始向他施加惩罚...
+                            </p>
+                            <div class="flex items-center text-xs text-gray-medium mb-4">
+                                <span><i class="fa fa-eye mr-1"></i> 3.7k</span>
+                                <span class="mx-2">·</span>
+                                <span><i class="fa fa-thumbs-o-up mr-1"></i> 986</span>
+                                <span class="mx-2">·</span>
+                                <span><i class="fa fa-comment-o mr-1"></i> 89</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="#" class="flex-1 py-1.5 bg-light text-dark text-sm rounded hover:bg-gray-200 transition-colors text-center book-btn book-btn-primary">
+                                    查看
+                                </a>
+                                <a href="#" class="flex-1 py-1.5 bg-primary/10 text-primary text-sm rounded hover:bg-primary/20 transition-colors text-center book-btn book-btn-secondary">
+                                    编辑
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 最新动态 -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow overflow-hidden mb-6 book-card">
+            <div class="p-6 border-b">
+                <h2 class="text-xl font-bold font-handwriting">创作动态</h2>
+            </div>
+            
+            <div class="divide-y">
+                <!-- 动态1 -->
+                <div class="p-6 hover:bg-light/50 transition-colors">
+                    <div class="flex gap-4">
+                        <img src="https://picsum.photos/id/1/60/60" alt="星际漫游者封面" class="w-14 h-14 rounded object-cover">
+                        <div>
+                            <p class="text-sm">
+                                <span class="font-medium">《星际漫游者》</span> 第五章：外星文明 已更新
+                            </p>
+                            <p class="text-xs text-gray-medium mt-1">2小时前</p>
+                            <div class="mt-3 flex gap-3">
+                                <a href="#" class="text-sm text-primary hover:underline">查看章节</a>
+                                <a href="#" class="text-sm text-gray-medium hover:text-primary">
+                                    <i class="fa fa-bar-chart mr-1"></i> 数据统计
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 动态2 -->
+                <div class="p-6 hover:bg-light/50 transition-colors">
+                    <div class="flex gap-4">
+                        <img src="https://picsum.photos/id/3/60/60" alt="时间旅行者的日记封面" class="w-14 h-14 rounded object-cover">
+                        <div>
+                            <p class="text-sm">
+                                <span class="font-medium">《时间旅行者的日记》</span> 第五章：蝴蝶效应 已发布
+                            </p>
+                            <p class="text-xs text-gray-medium mt-1">3天前</p>
+                            <div class="mt-3 flex gap-3">
+                                <a href="#" class="text-sm text-primary hover:underline">查看章节</a>
+                                <a href="#" class="text-sm text-gray-medium hover:text-primary">
+                                    <i class="fa fa-bar-chart mr-1"></i> 数据统计
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 动态3 -->
+                <div class="p-6 hover:bg-light/50 transition-colors">
+                    <div class="flex gap-4">
+                        <img src="https://picsum.photos/id/2/60/60" alt="人工智能的觉醒封面" class="w-14 h-14 rounded object-cover">
+                        <div>
+                            <p class="text-sm">
+                                <span class="font-medium">《人工智能的觉醒》</span> 全文已完结，感谢各位读者的支持！
+                            </p>
+                            <p class="text-xs text-gray-medium mt-1">1周前</p>
+                            <div class="mt-3 flex gap-3">
+                                <a href="#" class="text-sm text-primary hover:underline">阅读全文</a>
+                                <a href="#" class="text-sm text-gray-medium hover:text-primary">
+                                    <i class="fa fa-bar-chart mr-1"></i> 数据统计
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 text-center border-t">
+                <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-light transition-colors text-sm book-btn book-btn-primary">
+                    查看更多动态
+                </button>
+            </div>
+        </div>
+        
+        <!-- 数据统计 -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow overflow-hidden mb-6 book-card">
+            <div class="p-6 border-b">
+                <h2 class="text-xl font-bold font-handwriting">创作数据</h2>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 阅读量统计 -->
+                    <div class="border border-gray-100 rounded-lg p-4">
+                        <h3 class="font-medium mb-4 font-handwriting">近30天阅读量</h3>
+                        <div class="h-64 bg-light rounded-lg relative overflow-hidden">
+                            <!-- 这里可以放图表 -->
+                            <div class="absolute inset-0 flex items-end justify-around px-2">
+                                <div class="w-2 bg-primary/60 rounded-t" style="height: 40%"></div>
+                                <div class="w-2 bg-primary/60 rounded-t" style="height: 55%"></div>
+                                <div class="w-2 bg-primary/60 rounded-t" style="height: 45%"></div>
+                                <div class="w-2 bg-primary/60 rounded-t" style="height: 60%"></div>
+                                <div class="w-2 bg-primary/60 rounded-t" style="height: 75%"></div>
+                                <div class="w-2 bg-primary/60 rounded-t" style="height: 65%"></div>
+                                <div class="w-2 bg-primary rounded-t" style="height: 90%"></div>
+                                <div class="w-2 bg-primary/80 rounded-t" style="height: 80%"></div>
+                                <div class="w-2 bg-primary/70 rounded-t" style="height: 70%"></div>
+                                <div class="w-2 bg-primary/60 rounded-t" style="height: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 作品数据对比 -->
+                    <div class="border border-gray-100 rounded-lg p-4">
+                        <h3 class="font-medium mb-4 font-handwriting">作品数据对比</h3>
+                        <div class="h-64 bg-light rounded-lg relative overflow-hidden">
+                            <!-- 这里可以放图表 -->
+                            <div class="absolute inset-0 p-4">
+                                <div class="flex items-end gap-6 h-full">
+                                    <div class="flex flex-col items-center flex-1">
+                                        <div class="w-full bg-primary/70 rounded-t" style="height: 65%"></div>
+                                        <span class="text-xs mt-1">星际漫游者</span>
+                                    </div>
+                                    <div class="flex flex-col items-center flex-1">
+                                        <div class="w-full bg-primary rounded-t" style="height: 90%"></div>
+                                        <span class="text-xs mt-1">人工智能的觉醒</span>
+                                    </div>
+                                    <div class="flex flex-col items-center flex-1">
+                                        <div class="w-full bg-primary/80 rounded-t" style="height: 75%"></div>
+                                        <span class="text-xs mt-1">时间旅行者的日记</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white/80 backdrop-blur-sm border-t border-primary/10 mt-12 py-8 book-footer">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-5 md:mb-0 pen-animation">
+                    <i class="fa fa-book text-primary text-xl transition-transform duration-500 hover:rotate-12"></i>
+                    <span class="text-lg font-handwriting font-bold text-primary">Novel Forum</span>
+                </div>
+                <div class="text-sm text-gray-medium text-center md:text-right">
+                    <p class="font-handwriting text-primary">以文会友，执笔同行</p>
+                    <p class="mt-2">© 2025 Novel Forum小说创作交流平台</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+            // 添加动画效果
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.style.maxHeight = '0';
+                setTimeout(() => {
+                    mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                    mobileMenu.style.overflow = 'hidden';
+                    mobileMenu.style.transition = 'max-height 0.5s ease-in-out';
+                }, 10);
+            } else {
+                mobileMenu.style.maxHeight = '0';
+                setTimeout(() => {
+                    mobileMenu.style.overflow = '';
+                    mobileMenu.style.transition = '';
+                }, 500);
+            }
+        });
+
+        // 用户菜单切换
+        const userAvatar = document.querySelector('.rounded-full.cursor-pointer');
+        if (userAvatar) {
+            userAvatar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const userMenu = document.getElementById('user-menu');
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // 点击其他区域关闭用户菜单
+            document.addEventListener('click', function(event) {
+                const userMenu = document.getElementById('user-menu');
+                if (userMenu && !userMenu.classList.contains('hidden') && 
+                    !userAvatar.contains(event.target) && 
+                    !userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // 页面滚动动画和元素显示
+        function setupScrollAnimations() {
+            // 文字显示动画
+            document.querySelectorAll('.text-reveal').forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('animated');
+                }, 100 * index);
+            });
+            
+            // 滚动显示元素
+            const revealElements = () => {
+                const windowHeight = window.innerHeight;
+                const revealPoint = 150;
+                
+                // 更新滚动进度条
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.querySelector(".scroll-progress").style.width = scrolled + "%";
+                
+                // 导航栏滚动效果
+                const navbar = document.getElementById('navbar');
+                if (winScroll > 50) {
+                    navbar.classList.add('shadow-md');
+                    navbar.classList.remove('shadow-sm');
+                } else {
+                    navbar.classList.remove('shadow-md');
+                    navbar.classList.add('shadow-sm');
+                }
+            };
+            
+            // 页面加载和滚动时触发
+            window.addEventListener('load', revealElements);
+            window.addEventListener('scroll', revealElements);
+            
+            // 初始触发一次
+            setTimeout(revealElements, 100);
+        }
+
+        // 页面加载完成后执行
+        window.addEventListener('load', function() {
+            setupScrollAnimations();
+        });
+    </script>
+</body>
+</html>

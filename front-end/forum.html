@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>群组论坛 - Novel Forum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link href="css/book-style.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B7D6B',
+                        secondary: '#A67F65',
+                        accent: '#D9B38C',
+                        light: '#F9F5F1',
+                        dark: '#4A4542',
+                        'gray-medium': '#7A7265'
+                    },
+                    fontFamily: {
+                        serif: ['Noto Serif SC', 'serif'],
+                        handwriting: ['ZCOOL XiaoWei', 'serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 20px rgba(0, 0, 0, 0.08)',
+                        'hover': '0 10px 30px rgba(0, 0, 0, 0.12)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-hover hover:-translate-y-1;
+            }
+            .btn-effect {
+                @apply transform transition-transform hover:scale-105 active:scale-95;
+            }
+            .search-focus {
+                @apply border-primary ring-2 ring-primary/20;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light text-dark paper-texture font-serif">
+    <!-- 滚动进度条 -->
+    <div class="scroll-progress"></div>
+    
+    <!-- 装饰线条 -->
+    <div class="decoration-line top"></div>
+    <div class="decoration-line left"></div>
+    
+    <!-- 装饰元素：漂浮的书页 -->
+    <div class="floating-page" style="top: 15%; right: 15%; width: 56px; height: 84px; transform: rotate(-8deg);"></div>
+    <div class="floating-page" style="bottom: 30%; left: 20%; width: 44px; height: 62px; transform: rotate(5deg); animation-delay: 1.5s;"></div>
+    
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-40 book-navbar" id="navbar">
+        <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-book text-primary text-2xl"></i>
+                <span class="text-xl font-handwriting font-bold text-primary">Novel Forum</span>
+            </div>
+            
+            <!-- 桌面端导航 -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">首页</a>
+                <a href="forum.html" class="font-medium text-primary border-b-2 border-primary transition-all duration-300 nav-link">群组论坛</a>
+                <a href="personal-space.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">个人空间</a>
+                <a href="penalty.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">罚文专区</a>
+                <a href="contest.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">征文活动</a>
+                <a href="announcement.html" class="font-medium hover:text-primary transition-colors duration-300 nav-link">公告栏</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="relative text-gray-medium hover:text-primary transition-colors">
+                    <i class="fa fa-bell text-xl"></i>
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-xs rounded-full flex items-center justify-center">3</span>
+                </button>
+                
+                <a href="login.html" class="hidden md:block book-btn book-btn-primary">
+                    登录
+                </a>
+                <!-- 移动端菜单按钮 -->
+                <button class="md:hidden text-dark text-xl" id="mobile-menu-button">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- 移动端导航菜单 -->
+        <div class="md:hidden hidden bg-white/95 backdrop-blur-sm border-t border-primary/10" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="index.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">首页</a>
+                <a href="forum.html" class="py-2 font-medium text-primary border-l-2 border-primary pl-2 transition-all duration-300">群组论坛</a>
+                <a href="personal-space.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">个人空间</a>
+                <a href="penalty.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">罚文专区</a>
+                <a href="contest.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">征文活动</a>
+                <a href="announcement.html" class="py-2 font-medium hover:text-primary transition-colors duration-300 border-l-2 border-transparent hover:border-primary/30 pl-2">公告栏</a>
+                <a href="login.html" class="py-2 text-center book-btn book-btn-primary">
+                    登录
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 relative">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- 左侧边栏 -->
+            <aside class="lg:w-1/5">
+                <div class="book-card sticky top-24">
+                    <div class="p-5 bg-primary/10 border-b border-primary/20">
+                        <h3 class="font-bold font-handwriting">群组导航</h3>
+                        <p class="text-sm text-gray-medium">发现你的创作社群</p>
+                    </div>
+                    
+                    <nav class="p-3">
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="#" class="flex items-center py-2.5 px-3 rounded-lg bg-primary/10 text-primary border-l-4 border-primary">
+                                    <i class="fa fa-th-large w-5 text-center mr-3"></i>
+                                    <span>全部群组</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center py-2.5 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-star-o w-5 text-center mr-3"></i>
+                                    <span>我的关注</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center py-2.5 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-clock-o w-5 text-center mr-3"></i>
+                                    <span>最近浏览</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center py-2.5 px-3 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <i class="fa fa-line-chart w-5 text-center mr-3"></i>
+                                    <span>热门推荐</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    
+                    <!-- 群组分类 -->
+                    <div class="p-5 border-t border-primary/10">
+                        <h4 class="font-medium text-sm mb-3 flex items-center font-handwriting">
+                            <i class="fa fa-tags text-primary mr-2"></i>群组分类
+                        </h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="#" class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <span class="text-sm">科幻创作</span>
+                                    <span class="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">24</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <span class="text-sm">青春文学</span>
+                                    <span class="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">18</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <span class="text-sm">历史小说</span>
+                                    <span class="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">12</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <span class="text-sm">散文随笔</span>
+                                    <span class="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">9</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <span class="text-sm">诗歌创作</span>
+                                    <span class="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">15</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-primary/5 transition-colors">
+                                    <span class="text-sm">写作技巧</span>
+                                    <span class="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">21</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <button class="mt-4 w-full py-2 text-sm text-primary border border-primary/30 rounded-lg hover:bg-primary/5 transition-colors btn-effect book-btn">
+                            查看全部分类
+                        </button>
+                    </div>
+                    
+                    <!-- 创建群组 -->
+                    <div class="p-5 border-t border-primary/10">
+                        <button class="w-full py-2.5 book-btn book-btn-primary">
+                            <i class="fa fa-plus mr-2"></i> 创建群组
+                        </button>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- 右侧主内容区 -->
+            <div class="lg:w-4/5">
+                <!-- 页面标题和搜索 -->
+                <div class="book-card p-5 mb-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold font-handwriting">群组论坛</h1>
+                            <p class="text-gray-medium mt-1">在这里发现和加入你感兴趣的创作群组</p>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="relative">
+                                <input type="text" placeholder="搜索群组..." class="book-form-input pl-10 pr-4 py-2 w-64">
+                                <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-medium"></i>
+                            </div>
+                            <select class="book-form-input py-2">
+                                <option>按热度排序</option>
+                                <option>按时间排序</option>
+                                <option>按成员数排序</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 群组列表 -->
+                <div class="space-y-6">
+                    <!-- 群组1 -->
+                    <div class="book-card overflow-hidden card-hover">
+                        <div class="p-5 border-b border-primary/10">
+                            <div class="flex flex-col md:flex-row gap-5">
+                                <div class="md:w-1/4">
+                                    <img src="https://picsum.photos/id/10/300/200" alt="科幻创作群组" class="w-full h-32 object-cover rounded-lg">
+                                </div>
+                                <div class="md:w-3/4">
+                                    <div class="flex flex-wrap items-start justify-between gap-3">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <h3 class="text-xl font-bold font-handwriting">科幻创作群组</h3>
+                                                <span class="bg-secondary/10 text-secondary text-xs px-2 py-0.5 rounded-full">官方认证</span>
+                                            </div>
+                                            <p class="text-gray-medium text-sm mb-3">
+                                                专注于科幻小说创作的交流群组，分享科幻世界观构建、未来科技设定、外星文明想象等创作内容。
+                                            </p>
+                                            <div class="flex flex-wrap gap-3 text-sm">
+                                                <div class="flex items-center">
+                                                    <i class="fa fa-users text-primary mr-1"></i>
+                                                    <span>成员: 342人</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i class="fa fa-file-text-o text-primary mr-1"></i>
+                                                    <span>帖子: 128篇</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i class="fa fa-calendar text-primary mr-1"></i>
+                                                    <span>创建: 2022-03-15</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex gap-2">
+                                            <button class="px-3 py-1.5 border border-primary text-primary rounded-lg hover:bg-primary/5 transition-colors text-sm">
+                                                <i class="fa fa-bookmark-o mr-1"></i> 收藏
+                                            </button>
+                                            <button class="px-3 py-1.5 book-btn book-btn-primary">
+                                                <i class="fa fa-user-plus mr-1"></i> 加入群组
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-primary/5">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-medium mr-3">群主:</span>
+                                    <div class="flex items-center">
+                                        <img src="https://picsum.photos/id/64/30/30" alt="群主头像" class="w-6 h-6 rounded-full mr-1">
+                                        <span class="text-sm">张小白</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="text-gray-medium mr-3">最新帖子:</span>
+                                    <a href="#" class="text-primary hover:underline">分享一些实用的科幻设定技巧</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 群组2 -->
+                    <div class="book-card overflow-hidden card-hover">
+                        <div class="p-5 border-b border-primary/10">
+                            <div class="flex flex-col md:flex-row gap-5">
+                                <div class="md:w-1/4">
+                                    <img src="https://picsum.photos/id/11/300/200" alt="青春文学群组" class="w-full h-32 object-cover rounded-lg">
+                                </div>
+                                <div class="md:w-3/4">
+                                    <div class="flex flex-wrap items-start justify-between gap-3">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <h3 class="text-xl font-bold font-handwriting">青春文学群组</h3>
+                                                <span class="bg-accent/10 text-accent text-xs px-2 py-0.5 rounded-full">活跃</span>
+                                            </div>
+                                            <p class="text-gray-medium text-sm mb-3">
+                                                专注于青春文学创作的交流群组，探讨校园生活、青春情感、成长故事等主题的创作技巧和心得分享。
+                                            </p>
+                                            <div class="flex flex-wrap gap-3 text-sm">
+                                                <div class="flex items-center">
+                                                    <i class="fa fa-users text-primary mr-1"></i>
+                                                    <span>成员: 218人</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i class="fa fa-file-text-o text-primary mr-1"></i>
+                                                    <span>帖子: 89篇</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i class="fa fa-calendar text-primary mr-1"></i>
+                                                    <span>创建: 2022-07-22</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex gap-2">
+                                            <button class="px-3 py-1.5 border border-primary text-primary rounded-lg hover:bg-primary/5 transition-colors text-sm">
+                                                <i class="fa fa-bookmark-o mr-1"></i> 收藏
+                                            </button>
+                                            <button class="px-3 py-1.5 book-btn book-btn-primary">
+                                                <i class="fa fa-user-plus mr-1"></i> 加入群组
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-primary/5">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-medium mr-3">群主:</span>
+                                    <div class="flex items-center">
+                                        <img src="https://picsum.photos/id/65/30/30" alt="群主头像" class="w-6 h-6 rounded-full mr-1">
+                                        <span class="text-sm">李青春</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="text-gray-medium mr-3">最新帖子:</span>
+                                    <a href="#" class="text-primary hover:underline">关于青春文学中情感描写的几点思考</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 群组3 -->
+                    <div class="book-card overflow-hidden card-hover">
+                        <div class="p-5 border-b border-primary/10">
+                            <div class="flex flex-col md:flex-row gap-5">
+                                <div class="md:w-1/4">
+                                    <img src="https://picsum.photos/id/12/300/200" alt="历史小说群组" class="w-full h-32 object-cover rounded-lg">
+                                </div>
+                                <div class="md:w-3/4">
+                                    <div class="flex flex-wrap items-start justify-between gap-3">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <h3 class="text-xl font-bold font-handwriting">历史小说群组</h3>
+                                                <span class="bg-secondary/10 text-secondary text-xs px-2 py-0.5 rounded-full">官方认证</span>
+                                            </div>
+                                            <p class="text-gray-medium text-sm mb-3">
+                                                专注于历史小说创作的交流群组，讨论历史背景考证、人物塑造、时代氛围营造等创作要点。
+                                            </p>
+                                            <div class="flex flex-wrap gap-3 text-sm">
+                                                <div class="flex items-center">
+                                                    <i class="fa fa-users text-primary mr-1"></i>
+                                                    <span>成员: 156人</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i class="fa fa-file-text-o text-primary mr-1"></i>
+                                                    <span>帖子: 67篇</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i class="fa fa-calendar text-primary mr-1"></i>
+                                                    <span>创建: 2023-01-10</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex gap-2">
+                                            <button class="px-3 py-1.5 border border-primary text-primary rounded-lg hover:bg-primary/5 transition-colors text-sm">
+                                                <i class="fa fa-bookmark-o mr-1"></i> 收藏
+                                            </button>
+                                            <button class="px-3 py-1.5 book-btn book-btn-primary">
+                                                <i class="fa fa-user-plus mr-1"></i> 加入群组
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-primary/5">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-medium mr-3">群主:</span>
+                                    <div class="flex items-center">
+                                        <img src="https://picsum.photos/id/66/30/30" alt="群主头像" class="w-6 h-6 rounded-full mr-1">
+                                        <span class="text-sm">王历史</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="text-gray-medium mr-3">最新帖子:</span>
+                                    <a href="#" class="text-primary hover:underline">如何在历史小说中平衡史实与虚构</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 分页 -->
+                <div class="flex justify-center mt-8">
+                    <nav class="flex space-x-2">
+                        <a href="#" class="px-3 py-2 rounded-lg bg-primary text-white">1</a>
+                        <a href="#" class="px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors">2</a>
+                        <a href="#" class="px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors">3</a>
+                        <a href="#" class="px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors">下一页</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="book-footer">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fa fa-book text-primary text-xl"></i>
+                    <span class="text-lg font-handwriting font-bold text-primary">Novel Forum</span>
+                </div>
+                <div class="text-sm text-gray-medium text-center md:text-right">
+                    <p class="font-handwriting">以文会友，执笔同行</p>
+                    <p class="mt-1">© 2025 Novel Forum小说创作交流平台</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 滚动进度条
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector(".scroll-progress").style.width = scrolled + "%";
+            
+            // 导航栏滚动效果
+            const navbar = document.getElementById('navbar');
+            if (winScroll > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
+    </script>
+</body>
+</html>
